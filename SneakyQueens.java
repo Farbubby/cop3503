@@ -29,19 +29,9 @@ public class SneakyQueens {
         {
             loc = coordinateStrings.get(i);
             point = convertStringPos(loc);
-            if (!(result.containsKey(point[0] - func.get(point[0]))))
+            if (!(result.containsKey(point[0] - func.get(point[0])) || result.containsKey(point[0] + func.get(point[0]))))
             {
                 result.put(point[0] - func.get(point[0]), i);
-            }
-            else return false;
-        }
-        result.clear();
-        for (i = 0; i < size; i++)
-        {
-            loc = coordinateStrings.get(i);
-            point = convertStringPos(loc);
-            if (!(result.containsKey(point[0] + func.get(point[0]))))
-            {
                 result.put(point[0] + func.get(point[0]), i);
             }
             else return false;
