@@ -11,38 +11,47 @@ public class SneakyQueens {
         int i, point[], size = coordinateStrings.size();
         String loc;
         Hashtable<Integer, Integer> func = new Hashtable<>(), result = new Hashtable<>();
+        int[][] posList = convertList(coordinateStrings);
 
         for (i = 0; i < size; i++)
         {
-            loc = coordinateStrings.get(i);
-            if (!(isValidPlace(loc, boardSize))) continue;
-            point = convertStringPos(loc);
-            if (!(func.containsKey(point[0]) || result.containsKey(point[1])))
+            if (!(func.containsKey(posList[i][0]) || result.containsKey(posList[i][1])))
             {
-                func.put(point[0], point[1]);
-                result.put(point[1], point[0]);
+                func.put(posList[i][0], posList[i][1]);
+                result.put(posList[i][1], posList[i][0]);
             }
             else return false;
         }
         result.clear();
         for (i = 0; i < size; i++)
         {
-            loc = coordinateStrings.get(i);
-            point = convertStringPos(loc);
-            if (!(result.containsKey(point[0] - func.get(point[0])) || result.containsKey(point[0] + func.get(point[0]))))
+            if (!(result.containsKey(posList[i][0] - func.get(posList[i][0]))))
             {
-                result.put(point[0] - func.get(point[0]), i);
-                result.put(point[0] + func.get(point[0]), i);
+                result.put(posList[i][0] - func.get(posList[i][0]), i);
+            }
+            else return false;
+        }
+        result.clear();
+        for (i = 0; i < size; i++)
+        {
+            if (!(result.containsKey(posList[i][0] + func.get(posList[i][0]))))
+            {
+                result.put(posList[i][0] + func.get(posList[i][0]), i);
             }
             else return false;
         }
         return true;
     }
 
-    public static boolean isValidPlace(String pos, int boardSize)
-    {
-        int[] point = convertStringPos(pos);
-        return !(point[0] > boardSize || point[1] > boardSize);
+    public static int[][] convertList(ArrayList<String> coordinateStrings)
+    {   
+        int i, size = coordinateStrings.size();
+        int[][] posList = new int[size][];
+        for (i = 0; i < size; i++)
+        {
+            posList[i] = convertStringPos(coordinateStrings.get(i));
+        }
+        return posList;
     }
 
     public static int[] convertStringPos(String pos)
