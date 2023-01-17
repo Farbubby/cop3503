@@ -8,11 +8,10 @@ public class SneakyQueens {
 
     public static boolean allTheQueensAreSafe(ArrayList<String> coordinateStrings, int boardSize)
     {
-        int i, point[], size = coordinateStrings.size();
-        String loc;
+        int i, size = coordinateStrings.size(), posList[][] = convertList(coordinateStrings);
         Hashtable<Integer, Integer> func = new Hashtable<>(), result = new Hashtable<>();
-        int[][] posList = convertList(coordinateStrings);
 
+        // Handles cases for a pair of queens that are on the same row or column
         for (i = 0; i < size; i++)
         {
             if (!(func.containsKey(posList[i][0]) || result.containsKey(posList[i][1])))
@@ -23,6 +22,8 @@ public class SneakyQueens {
             else return false;
         }
         result.clear();
+
+        // Handles cases for a pair of queens that are on the +1 slope diagonal "/"
         for (i = 0; i < size; i++)
         {
             if (!(result.containsKey(posList[i][0] - func.get(posList[i][0]))))
@@ -32,6 +33,8 @@ public class SneakyQueens {
             else return false;
         }
         result.clear();
+
+        // Handles cases for a pair of queens that are on the -1 slope diagonal "\"
         for (i = 0; i < size; i++)
         {
             if (!(result.containsKey(posList[i][0] + func.get(posList[i][0]))))
@@ -43,6 +46,7 @@ public class SneakyQueens {
         return true;
     }
 
+    // int[][] = array of points [[x1, y1], [x2, y2], ...]
     public static int[][] convertList(ArrayList<String> coordinateStrings)
     {   
         int i, size = coordinateStrings.size();
@@ -54,9 +58,11 @@ public class SneakyQueens {
         return posList;
     }
 
+    // Helper function that converts the letters and digits part of the string into an array point [x1, y1]
     public static int[] convertStringPos(String pos)
     {
         int i, vert, horizz, len = pos.length();
+        // Stops until a digit is reached in the string
         for (i = 0; i < len; i++)
         {
             if (Character.isDigit(pos.charAt(i))) break;
@@ -67,6 +73,7 @@ public class SneakyQueens {
         return point;
     }
 
+    // Helper function that converts the letters into an x-coordinate with base-26 calculations
     private static int baseConversion(String pos) 
     {
         int i, sum = 0, len = pos.length();
