@@ -8,18 +8,19 @@ public class SneakyQueens {
 
     public static boolean allTheQueensAreSafe(ArrayList<String> coordinateStrings, int boardSize)
     {
-        int i, size = coordinateStrings.size(), posList[][] = convertList(coordinateStrings);
+        int i, size = coordinateStrings.size();
         Hashtable<Integer, Integer> func = new Hashtable<>(), result = new Hashtable<>();
+        ArrayList<int[]> posList = convertList(coordinateStrings);
 
         // Handles cases for a pair of queens that are on the same row or column
-        // int[][] = array of points [[x1, y1], [x2, y2], ...]
+        // Arraylist of arrays which are points ([x1, y1])
         for (i = 0; i < size; i++)
         {   
             // Checks if any of the x or y coords have been seen already
-            if (!(func.containsKey(posList[i][0]) || result.containsKey(posList[i][1])))
+            if (!(func.containsKey(posList.get(i)[0]) || result.containsKey(posList.get(i)[1])))
             {
-                func.put(posList[i][0], posList[i][1]);
-                result.put(posList[i][1], posList[i][0]);
+                func.put(posList.get(i)[0], posList.get(i)[1]);
+                result.put(posList.get(i)[1], posList.get(i)[0]);
             }
             else return false;
         }
@@ -29,9 +30,9 @@ public class SneakyQueens {
         for (i = 0; i < size; i++)
         {
             // Derived from formula: (x1-y1) = a-b given (a, b) and that (x1-a)/(y1-b) = 1
-            if (!(result.containsKey(posList[i][0] - func.get(posList[i][0]))))
+            if (!(result.containsKey(posList.get(i)[0] - func.get(posList.get(i)[0]))))
             {
-                result.put(posList[i][0] - func.get(posList[i][0]), i);
+                result.put(posList.get(i)[0] - func.get(posList.get(i)[0]), i);
             }
             else return false;
         }
@@ -41,9 +42,9 @@ public class SneakyQueens {
         for (i = 0; i < size; i++)
         {
             // // Derived from formula: (x1+y1) = a+b given (a, b) and that (x1-a)/(y1-b) = -1
-            if (!(result.containsKey(posList[i][0] + func.get(posList[i][0]))))
+            if (!(result.containsKey(posList.get(i)[0] + func.get(posList.get(i)[0]))))
             {
-                result.put(posList[i][0] + func.get(posList[i][0]), i);
+                result.put(posList.get(i)[0] + func.get(posList.get(i)[0]), i);
             }
             else return false;
         }
@@ -51,12 +52,13 @@ public class SneakyQueens {
     }
 
     // Coverts all of the position strings into an array of point coordinates ([x1, y1])
-    public static int[][] convertList(ArrayList<String> coordinateStrings)
+    public static ArrayList<int[]> convertList(ArrayList<String> coordinateStrings)
     {   
-        int i, size = coordinateStrings.size(), posList[][] = new int[size][];
+        int i, size = coordinateStrings.size();
+        ArrayList<int[]> posList = new ArrayList<>();
         for (i = 0; i < size; i++)
         {
-            posList[i] = convertStringPos(coordinateStrings.get(i));
+            posList.add(convertStringPos(coordinateStrings.get(i)));
         }
         return posList;
     }
