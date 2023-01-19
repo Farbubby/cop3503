@@ -1,8 +1,7 @@
 // Farhan Mahbub
 // COP3503 Spring 2023
 // fa203667
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.*;
 
 public class SneakyQueens {
 
