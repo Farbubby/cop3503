@@ -9,7 +9,7 @@ public class SneakyQueens {
     {
         int i, size = coordinateStrings.size();
         Hashtable<Integer, Integer> xcoords = new Hashtable<>(), ycoords = new Hashtable<>();
-        Hashtable<Integer, Integer> leftDown = new Hashtable<>(), rightUp = new Hashtable<>();
+        Hashtable<Integer, Integer> rightDown = new Hashtable<>(), rightUp = new Hashtable<>();
 
         for (i = 0; i < size; i++)
         {   
@@ -35,24 +35,27 @@ public class SneakyQueens {
 
             // Handles cases for a pair of queens that are on the -1 slope diagonal "\"
             // Derived from formula: (x1+y1) = a+b given (a, b) and that (x1-a)/(y1-b) = -1
-            if (!(leftDown.containsKey(point[0] + xcoords.get(point[0]))))
+            if (!(rightDown.containsKey(point[0] + xcoords.get(point[0]))))
             {
-                leftDown.put(point[0] + xcoords.get(point[0]), i);
+                rightDown.put(point[0] + xcoords.get(point[0]), i);
             }
             else return false;
         }
+
         return true;
     }
 
-    // Helper function that converts the letters and digits part of the string into an array point [x1, y1]
-    public static int[] convertStringPos(String pos)
+    // Function that converts the letters and digits of the string into an array point [x1, y1]
+    private static int[] convertStringPos(String pos)
     {
         int i, vert, horizz, len = pos.length();
-        // Stops until a digit is reached in the string
+
+        // Iterates until a digit is reached in the string
         for (i = 0; i < len; i++)
         {
             if (Character.isDigit(pos.charAt(i))) break;
         }
+
         vert = Integer.parseInt(pos.substring(i));
         horizz = baseConversion(pos);
         int[] point = {horizz, vert};
@@ -63,11 +66,15 @@ public class SneakyQueens {
     private static int baseConversion(String pos) 
     {
         int i, sum = 0, len = pos.length();
+
         for (i = 0; i < len; i++)
         {
+            // Stops when a digit is reached
+            // Iterative approach using the idea of (c * q) + r1: q is quotient and r1 is remainer
             if (Character.isLetter(pos.charAt(i))) sum = sum*26 + (pos.charAt(i) - 'a' + 1);
             else break;
         }
+
         return sum;
     }
 
