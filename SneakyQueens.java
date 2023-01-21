@@ -27,17 +27,17 @@ public class SneakyQueens
 
             // Handles cases for a pair of queens that are on the +1 slope diagonal "/"
             // Derived from formula: (x1-y1) = a-b given (a, b) and that (x1-a)/(y1-b) = 1
-            if (!(rightUp.containsKey(point[0] - xcoords.get(point[0]))))
+            if (!(rightUp.containsKey(point[0] - point[1])))
             {
-                rightUp.put(point[0] - xcoords.get(point[0]), i);
+                rightUp.put(point[0] - point[1], i);
             }
             else return false;
 
             // Handles cases for a pair of queens that are on the -1 slope diagonal "\"
             // Derived from formula: (x1+y1) = a+b given (a, b) and that (x1-a)/(y1-b) = -1
-            if (!(rightDown.containsKey(point[0] + xcoords.get(point[0]))))
+            if (!(rightDown.containsKey(point[0] + point[1])))
             {
-                rightDown.put(point[0] + xcoords.get(point[0]), i);
+                rightDown.put(point[0] + point[1], i);
             }
             else return false;
         }
@@ -71,7 +71,10 @@ public class SneakyQueens
         {
             // Stops when a digit is reached
             // Iterative approach using the idea of (c * q) + r1: q is quotient and r1 is remainer
-            if (Character.isLetter(pos.charAt(i))) sum = sum*26 + (pos.charAt(i) - 'a' + 1);
+            if (Character.isLetter(pos.charAt(i))) 
+            {
+                sum = (sum * 26) + (pos.charAt(i) - 'a' + 1);
+            }
             else break;
         }
 
