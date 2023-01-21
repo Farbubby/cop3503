@@ -3,8 +3,8 @@
 // fa203667
 import java.util.*;
 
-public class SneakyQueens {
-
+public class SneakyQueens 
+{
     public static boolean allTheQueensAreSafe(ArrayList<String> coordinateStrings, int boardSize)
     {
         int i, size = coordinateStrings.size();
