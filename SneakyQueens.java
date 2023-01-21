@@ -87,5 +87,4 @@ public class SneakyQueens
     {
         return 15;
     }
-
 }
