@@ -12,31 +12,31 @@
 import java.io.*;
 import java.util.*;
 
-class Node
+class Node<T>
 {
-	int data;
-	Node left, right;
+	T data;
+	Node<T> left, right;
 
-	Node(int data)
+	Node(T data)
 	{
 		this.data = data;
 	}
 }
 
-public class BST
+public class GenericBST<T>
 {
-	private Node root;
+	private Node<T> root;
 
-	public void insert(int data)
+	public void insert(T data)
 	{
 		root = insert(root, data);
 	}
 
-	private Node insert(Node root, int data)
+	private Node<T> insert(Node<T> root, T data)
 	{
 		if (root == null)
 		{
-			return new Node(data);
+			return new Node<>(data);
 		}
 		else if (data < root.data)
 		{
@@ -50,12 +50,12 @@ public class BST
 		return root;
 	}
 
-	public void delete(int data)
+	public void delete(T data)
 	{
 		root = delete(root, data);
 	}
 
-	private Node delete(Node root, int data)
+	private Node<T> delete(Node<T> root, T data)
 	{
 		if (root == null)
 		{
@@ -95,7 +95,7 @@ public class BST
 
 	// This method assumes root is non-null, since this is only called by
 	// delete() on the left subtree, and only when that subtree is not empty.
-	private int findMax(Node root)
+	private T findMax(Node<T> root)
 	{
 		while (root.right != null)
 		{
@@ -105,12 +105,12 @@ public class BST
 		return root.data;
 	}
 
-	public boolean contains(int data)
+	public boolean contains(T data)
 	{
 		return contains(root, data);
 	}
 
-	private boolean contains(Node root, int data)
+	private boolean contains(Node<T> root, T data)
 	{
 		if (root == null)
 		{
@@ -137,7 +137,7 @@ public class BST
 		System.out.println();
 	}
 
-	private void inorder(Node root)
+	private void inorder(Node<T> root)
 	{
 		if (root == null)
 			return;
@@ -154,7 +154,7 @@ public class BST
 		System.out.println();
 	}
 
-	private void preorder(Node root)
+	private void preorder(Node<T> root)
 	{
 		if (root == null)
 			return;
@@ -171,7 +171,7 @@ public class BST
 		System.out.println();
 	}
 
-	private void postorder(Node root)
+	private void postorder(Node<T> root)
 	{
 		if (root == null)
 			return;
@@ -183,7 +183,7 @@ public class BST
 
 	public static void main(String [] args)
 	{
-		BST myTree = new BST();
+		GenericBST<Integer> myTree = new GenericBST<>();
 
 		for (int i = 0; i < 5; i++)
 		{
