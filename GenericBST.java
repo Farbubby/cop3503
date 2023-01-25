@@ -23,7 +23,7 @@ class Node<T>
 	}
 }
 
-public class GenericBST<T>
+public class GenericBST<T extends Comparable<T>>
 {
 	private Node<T> root;
 
@@ -38,11 +38,11 @@ public class GenericBST<T>
 		{
 			return new Node<>(data);
 		}
-		else if (data < root.data)
+		else if (data.compareTo(root.data) < 0)
 		{
 			root.left = insert(root.left, data);
 		}
-		else if (data > root.data)
+		else if (data.compareTo(root.data) >= 0)
 		{
 			root.right = insert(root.right, data);
 		}
@@ -61,11 +61,11 @@ public class GenericBST<T>
 		{
 			return null;
 		}
-		else if (data < root.data)
+		else if (data.compareTo(root.data) < 0)
 		{
 			root.left = delete(root.left, data);
 		}
-		else if (data > root.data)
+		else if (data.compareTo(root.data) > 0)
 		{
 			root.right = delete(root.right, data);
 		}
@@ -116,11 +116,11 @@ public class GenericBST<T>
 		{
 			return false;
 		}
-		else if (data < root.data)
+		else if (data.compareTo(root.data) < 0)
 		{
 			return contains(root.left, data);
 		}
-		else if (data > root.data)
+		else if (data.compareTo(root.data) > 0)
 		{
 			return contains(root.right, data);
 		}
