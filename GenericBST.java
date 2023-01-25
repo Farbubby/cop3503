@@ -183,11 +183,11 @@ public class GenericBST<T extends Comparable<T>>
 
 	public static double difficultyRating()
 	{
-		return 1.0
+		return 1.0;
 	}
 
 	public static double hoursSpent()
 	{
-		return 2.0
+		return 2.0;
 	}
 }
