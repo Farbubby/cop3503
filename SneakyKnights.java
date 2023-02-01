@@ -2,16 +2,22 @@
 // COP3503 Spring 2023
 // fa203667
 import java.util.*;
+import java.awt.Point;
 
-public class SneakyQueens 
+public class SneakyKnights
 {
+    public static void main(String[] args)
+    {
+        Point p = convertStringPos("sad345");
+        System.out.print(p);
+    }
     public static boolean allTheQueensAreSafe(ArrayList<String> coordinateStrings, int boardSize)
     {
-        
+        return false;
     }
 
     // Function that converts the letters and digits of the string into an array point [x1, y1]
-    private static int[] convertStringPos(String pos)
+    private static Point convertStringPos(String pos)
     {
         int i, charSum = 0, digiSum = 0, len = pos.length();
 
@@ -28,8 +34,7 @@ public class SneakyQueens
             }
         }
 
-        int[] point = {charSum, digiSum};
-        return point;
+        return new Point(charSum, digiSum);
     }
 
     public static double difficultyRating()
