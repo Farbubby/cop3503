@@ -65,6 +65,6 @@ public class SneakyKnights
 
     public static double hoursSpent()
     {
-        return 15;
+        return 10;
     }
 }
