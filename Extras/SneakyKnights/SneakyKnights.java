@@ -8,30 +8,30 @@ public class SneakyKnights
 {
     public static boolean allTheKnightsAreSafe(ArrayList<String> coordinateStrings, int boardSize)
     {
-        HashSet<String> seen = new HashSet<>();
+        HashSet<Point> seen = new HashSet<>();
         int i, size = coordinateStrings.size();
         for (i = 0; i < size; i++)
         {
             Point coord = convertStringPos(coordinateStrings.get(i));
-            seen.add(coord.toString());
+            seen.add(coord.getLocation());
 
             // If statement checks 8 possible positions around the knight
             coord.translate(-1, 2);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(-1, -1);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(0, -2);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(1, -1);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(2, 0);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(1, 1);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(0, 2);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
             coord.translate(-1, 1);
-            if (seen.contains(coord.toString())) return false;
+            if (seen.contains(coord.getLocation())) return false;
         }
         
         return true;
