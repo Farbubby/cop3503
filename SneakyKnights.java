@@ -12,6 +12,7 @@ public class SneakyKnights
         int i, size = coordinateStrings.size();
         for (i = 0; i < size; i++)
         {
+            // First thing to do is to hash the point of the current Knight 
             Point coord = convertStringPos(coordinateStrings.get(i));
             seen.add(coord.getLocation());
 
