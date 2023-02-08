@@ -10,13 +10,15 @@ public class SneakyKnights
     {
         HashSet<Point> seen = new HashSet<>();
         int i, size = coordinateStrings.size();
+
         for (i = 0; i < size; i++)
         {
             // First thing to do is to hash the point of the current Knight 
             Point coord = convertStringPos(coordinateStrings.get(i));
             seen.add(coord.getLocation());
 
-            // If statement checks 8 possible positions around the knight
+            // If statements checking 8 possible positions of attacking around the knight
+            // If one knight is found, then current knight can attack it.
             coord.translate(-1, 2);
             if (seen.contains(coord.getLocation())) return false;
             coord.translate(-1, -1);
@@ -61,7 +63,7 @@ public class SneakyKnights
 
     public static double difficultyRating()
     {
-        return 2.5;
+        return 3;
     }
 
     public static double hoursSpent()
