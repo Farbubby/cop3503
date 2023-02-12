@@ -1,6 +1,7 @@
 // Farhan Mahbub
 // COP3503 Spring 2023
 // fa203667
+
 import java.util.*;
 import java.awt.Point;
 
@@ -21,18 +22,25 @@ public class SneakyKnights
             // If one knight is found, then current knight can attack it.
             coord.translate(-1, 2);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(-1, -1);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(0, -2);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(1, -1);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(2, 0);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(1, 1);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(0, 2);
             if (seen.contains(coord.getLocation())) return false;
+
             coord.translate(-1, 1);
             if (seen.contains(coord.getLocation())) return false;
         }
