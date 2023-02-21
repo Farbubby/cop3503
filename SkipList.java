@@ -34,6 +34,35 @@ class Node<T extends Comparable<T>>
     {
         return pointers.get(level - 1);
     }
+
+    public void setNext(int level, Node<T> node)
+    {
+        pointers.set(level - 1, node);
+    }
+
+    public void grow()
+    {
+        pointers.add(null);
+    }
+
+    public void maybeGrow()
+    {
+
+        if (Math.random() < 0.5)
+        {
+            pointers.add(null);
+        }
+    }
+
+    public void trim(int height)
+    {
+        int i, size = pointers.size()
+
+        for (i = size; i < height - 1; i--)
+        {
+            pointers.remove(i);
+        }
+    }
 }
 
 public class SkipList<T>
@@ -65,5 +94,4 @@ public class SkipList<T>
     {
         return skipList.height();
     }
-
 }
