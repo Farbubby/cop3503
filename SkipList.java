@@ -93,4 +93,26 @@ public class SkipList<T>
     {
         return skipList.height();
     }
+
+    public void insert(T data)
+    {
+        int height = skipList.height();
+        ArrayList<Node<T> seen = new ArrayList<>();
+        Node<T> temp = skipList;
+
+        while (height != 1)
+        {
+            if ((temp.next(height).value()).compareTo(data) < 0)
+            {
+                temp = temp.next(height);
+            }
+
+            else if ((temp.next(height).value()).compareTo(data) > 0)
+            {
+                seen.add(temp.next(height));
+                height--;
+            }
+        }
+    }
+
 }
