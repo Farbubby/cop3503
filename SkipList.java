@@ -45,11 +45,15 @@ class Node<T extends Comparable<T>>
         pointers.add(null);
     }
 
-    public void maybeGrow()
+    public void generateHeight(int height)
     {
-        if (Math.random() < 0.5)
+        int i;
+        for (int i = 0; i < height; i++)
         {
-            pointers.add(null);
+            if (Math.random() < 0.5)
+            {
+                pointers.add(null);    
+            }
         }
     }
 
@@ -96,11 +100,11 @@ public class SkipList<T>
 
     public void insert(T data)
     {
-        int height = skipList.height();
+        int i, int saved, height = skipList.height();
         ArrayList<Node<T> seen = new ArrayList<>();
-        Node<T> temp = skipList;
+        Node<T> temp = skipList, temp1;
 
-        while (height != 1)
+        while (height != 0)
         {
             if ((temp.next(height).value()).compareTo(data) < 0)
             {
@@ -111,6 +115,29 @@ public class SkipList<T>
             {
                 seen.add(temp.next(height));
                 height--;
+            }
+
+            else
+            {
+                while (height != 1)
+                {
+                    seen.add(temp.next(height));
+                    height--;
+                }
+                temp1 = temp.next(height);
+                temp.setNext(height, new Node<T>(data, 1));
+                temp = temp.next(1);
+                temp.setNext(1, temp1);
+                temp.generateHeight(skipList.height());
+                saved = seen.size() - 1;
+
+                for (i = 1; i < temp.height(); i--)
+                {
+                    temp.setNext(i+1, seen.get(saved));
+                    seen.get(saved).setNext(i+1, temp);
+                    saved--;
+                }
+                
             }
         }
     }
