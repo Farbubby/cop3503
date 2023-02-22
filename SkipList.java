@@ -47,7 +47,6 @@ class Node<T extends Comparable<T>>
 
     public void maybeGrow()
     {
-
         if (Math.random() < 0.5)
         {
             pointers.add(null);
@@ -75,7 +74,7 @@ public class SkipList<T>
         skipList = new Node<T>(1);
     }
 
-    public SkipList<T>(int hieght)
+    public SkipList<T>(int height)
     {
         skipList = new Node<T>(height);
     }
