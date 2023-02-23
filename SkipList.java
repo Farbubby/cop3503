@@ -45,10 +45,10 @@ class Node<T extends Comparable<T>>
         pointers.add(null);
     }
 
-    public void generateHeight(int height)
+    public void generateRandomHeight(int maxHeight)
     {
         int i;
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < maxHeight; i++)
         {
             if (Math.random() < 0.5)
             {
@@ -76,11 +76,13 @@ public class SkipList<T>
     public SkipList<T>()
     {
         skipList = new Node<T>(1);
+        numNodes = 0;
     }
 
     public SkipList<T>(int height)
     {
         skipList = new Node<T>(height);
+        numNodes = 0;
     }
 
     public int size()
@@ -106,12 +108,26 @@ public class SkipList<T>
 
         while (true)
         {
-            if ((temp.next(height).value()).compareTo(data) < 0)
+            if (temp.next(height) == null)
+            {
+                seen.push(temp);
+
+                if (height == 0)
+                {
+                    temp1 = new Node<T>(data, 1);
+                    temp1.generateRandomHeight(skipList.height());
+                    numNodes++;
+                }
+
+                height--;
+            }
+
+            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
                 temp = temp.next(height);
             }
 
-            else if ((temp.next(height).value()).compareTo(data) >= 0)
+            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) >= 0)
             {
                 seen.push(temp);
                 height--;
@@ -119,7 +135,8 @@ public class SkipList<T>
                 if (height == 0)
                 {
                     temp1 = new Node<T>(data, 1);
-                    temp1.generateHeight(skipList.height()); 
+                    temp1.generateRandomHeight(skipList.height());
+                    numNodes++;
 
                     for (i = 1; i < temp.height(); i++)
                     {
@@ -132,5 +149,50 @@ public class SkipList<T>
                 }
             }
         }
+    }
+
+    public void insert(T data, int height)
+    {
+        // IMPLEMENT LATER ----------------------------
+    }
+
+    public void delete(T data)
+    {
+        // IMPLEMENT LATER -----------------------------
+    }
+
+    public boolean contains(T data)
+    {
+        // IMPLEMENT LATER -----------------------------
+    }
+
+    public Node<T> get(T data)
+    {
+        // IMPLEMENT LATER --------------------------------
+    }
+
+    private static int getMaxHeight(int numNodes)
+    {
+        return (int)(Math.log(numNodes)/Math.log(2));
+    }
+
+    private void growSkipList()
+    {
+        // IMPLEMENT LATER --------------------------------
+    }
+
+    private void trimSkipList()
+    {
+        // IMPLEMENT LATER ------------------------------
+    }
+
+    public static double difficultyRating()
+    {
+        return 4;
+    }
+
+    public static double hoursSpent()
+    {
+        return 20;
     }
 }
