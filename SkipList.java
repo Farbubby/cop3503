@@ -131,6 +131,11 @@ public class SkipList<T>
                         tempNode.setNext(i, temp1);
                     }
 
+                    if (skipList.height() < getMaxHeight(numNodes))
+                    {
+                        // IMPLEMENT growSkipList() later ---------------------------
+                    }
+
                     break;
                 }
             }
