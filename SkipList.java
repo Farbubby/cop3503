@@ -100,46 +100,37 @@ public class SkipList<T>
 
     public void insert(T data)
     {
-        int i, int saved, height = skipList.height();
-        ArrayList<Node<T> seen = new ArrayList<>();
+        int i, height = skipList.height();
+        Stack<Node<T>> seen = new Stack<>();
         Node<T> temp = skipList, temp1;
 
-        while (height != 0)
+        while (true)
         {
             if ((temp.next(height).value()).compareTo(data) < 0)
             {
                 temp = temp.next(height);
             }
 
-            else if ((temp.next(height).value()).compareTo(data) > 0)
+            else if ((temp.next(height).value()).compareTo(data) >= 0)
             {
-                seen.add(temp.next(height));
+                seen.push(temp);
                 height--;
-            }
 
-            else
-            {
-                while (height != 1)
+                if (height == 0)
                 {
-                    seen.add(temp.next(height));
-                    height--;
-                }
-                temp1 = temp.next(height);
-                temp.setNext(height, new Node<T>(data, 1));
-                temp = temp.next(1);
-                temp.setNext(1, temp1);
-                temp.generateHeight(skipList.height());
-                saved = seen.size() - 1;
+                    temp1 = new Node<T>(data, 1);
+                    temp1.generateHeight(skipList.height()); 
 
-                for (i = 1; i < temp.height(); i--)
-                {
-                    temp.setNext(i+1, seen.get(saved));
-                    seen.get(saved).setNext(i+1, temp);
-                    saved--;
+                    for (i = 1; i < temp.height(); i++)
+                    {
+                        Node<T> tempNode = seen.pop();
+                        temp1.setNext(i, tempNode.next(i));
+                        tempNode.setNext(i, temp1);
+                    }
+
+                    break;
                 }
-                
             }
         }
     }
-
 }
