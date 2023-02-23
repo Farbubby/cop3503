@@ -108,20 +108,6 @@ public class SkipList<T>
 
         while (true)
         {
-            if (temp.next(height) == null)
-            {
-                seen.push(temp);
-
-                if (height == 0)
-                {
-                    temp1 = new Node<T>(data, 1);
-                    temp1.generateRandomHeight(skipList.height());
-                    numNodes++;
-                }
-
-                height--;
-            }
-
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
                 temp = temp.next(height);
