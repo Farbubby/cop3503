@@ -106,7 +106,7 @@ public class SkipList<T>
         Stack<Node<T>> seen = new Stack<>();
         Node<T> temp = skipList, temp1;
 
-        while (true)
+        while (height != 0)
         {
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
@@ -135,8 +135,6 @@ public class SkipList<T>
                     {
                         // IMPLEMENT growSkipList() later ---------------------------
                     }
-
-                    break;
                 }
             }
         }
@@ -154,12 +152,59 @@ public class SkipList<T>
 
     public boolean contains(T data)
     {
-        // IMPLEMENT LATER -----------------------------
+        int height = skipList.length();
+        Node<T> temp = skipList;
+
+        while (height != 0)
+        {
+            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
+            {
+                temp = temp.next(height);
+            }
+
+            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) > 0)
+            {
+                height--;
+            }
+
+            else
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Node<T> get(T data)
     {
-        // IMPLEMENT LATER --------------------------------
+        int height = skipList.length();
+        Node<T> temp = skipList;
+
+        while (height != 0)
+        {
+            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
+            {
+                temp = temp.next(height);
+            }
+
+            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) > 0)
+            {
+                height--;
+            }
+
+            else
+            {
+                break;
+            }
+        }
+
+        if (height == 0)
+        {
+            return null;
+        }
+
+        return temp.next(height);
     }
 
     private static int getMaxHeight(int numNodes)
