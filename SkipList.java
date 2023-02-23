@@ -313,7 +313,7 @@ public class SkipList<T extends Comparable<T>>
     private void trimSkipList()
     {
         int height = skipList.height();
-        Stack<<Node<T>> visited = new Stack();
+        Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList;
 
         while (temp != null)
