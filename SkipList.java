@@ -9,25 +9,25 @@ class Node<T extends Comparable<T>>
     private T data;
     private ArrayList<Node<T>> pointers;
     
-    public Node<T>(int height)
+    public Node(int height)
     {
-        next = new ArrayList<>(height);
+        pointers = new ArrayList<>(height);
     }
 
-    public Node<T>(T data, int height)
+    public Node(T data, int height)
     {
         this.data = data;
-        next = new ArrayList<>(height); 
+        pointers = new ArrayList<>(height); 
     }
 
     public T value() 
     {
-        return data
+        return data;
     }
 
     public int height()
     {
-        return next.size();
+        return pointers.size();
     }
 
     public Node<T> next(int level)
@@ -56,7 +56,7 @@ class Node<T extends Comparable<T>>
     public void generateRandomHeight(int maxHeight)
     {
         int i;
-        for (int i = 0; i < maxHeight; i++)
+        for (i = 0; i < maxHeight; i++)
         {
             if (Math.random() < 0.5)
             {
@@ -67,27 +67,32 @@ class Node<T extends Comparable<T>>
 
     public void trim(int height)
     {
-        int i, size = pointers.size()
+        int i, size = pointers.size();
 
-        for (i = size; i < height - 1; i--)
+        for (i = size-1; i > height-1; i--)
         {
             pointers.remove(i);
         }
     }
 }
 
-public class SkipList<T>
+public class SkipList<T extends Comparable<T>>
 {
     private int numNodes;
     private Node<T> skipList;
 
-    public SkipList<T>()
+    public static void main(String[] args)
+    {
+        System.out.println("Hi");
+    }
+
+    public SkipList()
     {
         skipList = new Node<T>(1);
         numNodes = 0;
     }
 
-    public SkipList<T>(int height)
+    public SkipList(int height)
     {
         skipList = new Node<T>(height);
         numNodes = 0;
@@ -111,7 +116,7 @@ public class SkipList<T>
     public void insert(T data)
     {
         int i, height = skipList.height();
-        Stack<Node<T>> seen = new Stack<>();
+        Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, temp1;
 
         while (height != 0)
@@ -123,7 +128,7 @@ public class SkipList<T>
 
             else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) >= 0)
             {
-                seen.push(temp);
+                visited.push(temp);
                 height--;
 
                 if (height == 0)
@@ -134,7 +139,7 @@ public class SkipList<T>
 
                     for (i = 1; i < temp.height(); i++)
                     {
-                        Node<T> tempNode = seen.pop();
+                        Node<T> tempNode = visited.pop();
                         temp1.setNext(i, tempNode.next(i));
                         tempNode.setNext(i, temp1);
                     }
@@ -150,30 +155,30 @@ public class SkipList<T>
 
     public void insert(T data, int height)
     {
-        int i, height = skipList.height();
-        Stack<Node<T>> seen = new Stack<>();
+        int i, height1 = skipList.height();
+        Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, temp1;
 
-        while (height != 0)
+        while (height1 != 0)
         {
-            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
+            if (temp.next(height1) != null && (temp.next(height1).value()).compareTo(data) < 0)
             {
-                temp = temp.next(height);
+                temp = temp.next(height1);
             }
 
-            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) >= 0)
+            else if (temp.next(height1) == null || (temp.next(height1).value()).compareTo(data) >= 0)
             {
-                seen.push(temp);
-                height--;
+                visited.push(temp);
+                height1--;
 
-                if (height == 0)
+                if (height1 == 0)
                 {
                     temp1 = new Node<T>(data, height);
                     numNodes++;
 
                     for (i = 1; i < temp.height(); i++)
                     {
-                        Node<T> tempNode = seen.pop();
+                        Node<T> tempNode = visited.pop();
                         temp1.setNext(i, tempNode.next(i));
                         tempNode.setNext(i, temp1);
                     }
@@ -189,12 +194,42 @@ public class SkipList<T>
 
     public void delete(T data)
     {
-        // IMPLEMENT LATER -----------------------------
+        int i, height = skipList.height();
+        Stack<Node<T>> visited = new Stack<>();
+        Node<T> temp = skipList, temp1;
+
+        while (height != 0)
+        {
+            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
+            {
+                temp = temp.next(height);
+            }
+
+            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) > 0)
+            {
+                visited.push(temp);
+                height--;
+            }
+
+            else
+            {
+                for (i = temp.height(); i >= 1; i--)
+                {
+                    temp.setNext(i, temp.next(i).next(i));
+                }
+                numNodes--;
+
+                if (skipList.height() > getMaxHeight(numNodes))
+                {
+                    trimSkipList();
+                }
+            }
+        }
     }
 
     public boolean contains(T data)
     {
-        int height = skipList.length();
+        int height = skipList.height();
         Node<T> temp = skipList;
 
         while (height != 0)
@@ -220,7 +255,7 @@ public class SkipList<T>
 
     public Node<T> get(T data)
     {
-        int height = skipList.length();
+        int height = skipList.height();
         Node<T> temp = skipList;
 
         while (height != 0)
@@ -257,21 +292,36 @@ public class SkipList<T>
     private void growSkipList()
     {
         int height = skipList.height();
+        Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList;
 
         skipList.grow();
+        visited.push(skipList);
         temp = temp.next(height);
 
         while (temp != null)
         {
             temp.randomGrow();
-            temp = temp.next(height);
+            if (visited.peek().height() == temp.height())
+            {
+                visited.peek().setNext(visited.pop().height(), temp);
+                visited.push(temp);
+            }
         }
     }
 
     private void trimSkipList()
     {
-        // IMPLEMENT LATER ------------------------------
+        int height = skipList.height();
+        Stack<<Node<T>> visited = new Stack();
+        Node<T> temp = skipList;
+
+        while (temp != null)
+        {
+            visited.push(temp);
+            temp = temp.next(height);
+            visited.pop().trim(getMaxHeight(numNodes));
+        }
     }
 
     public static double difficultyRating()
