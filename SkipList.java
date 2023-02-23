@@ -45,6 +45,14 @@ class Node<T extends Comparable<T>>
         pointers.add(null);
     }
 
+    public void randomGrow()
+    {
+        if (Math.random() < 0.5)
+        {
+            pointers.add(null);    
+        }
+    }
+
     public void generateRandomHeight(int maxHeight)
     {
         int i;
@@ -133,7 +141,7 @@ public class SkipList<T>
 
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
-                        // IMPLEMENT growSkipList() later ---------------------------
+                        growSkipList();
                     }
                 }
             }
@@ -142,7 +150,41 @@ public class SkipList<T>
 
     public void insert(T data, int height)
     {
-        // IMPLEMENT LATER ----------------------------
+        int i, height = skipList.height();
+        Stack<Node<T>> seen = new Stack<>();
+        Node<T> temp = skipList, temp1;
+
+        while (height != 0)
+        {
+            if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
+            {
+                temp = temp.next(height);
+            }
+
+            else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) >= 0)
+            {
+                seen.push(temp);
+                height--;
+
+                if (height == 0)
+                {
+                    temp1 = new Node<T>(data, height);
+                    numNodes++;
+
+                    for (i = 1; i < temp.height(); i++)
+                    {
+                        Node<T> tempNode = seen.pop();
+                        temp1.setNext(i, tempNode.next(i));
+                        tempNode.setNext(i, temp1);
+                    }
+
+                    if (skipList.height() < getMaxHeight(numNodes))
+                    {
+                        growSkipList();
+                    }
+                }
+            }
+        }
     }
 
     public void delete(T data)
@@ -214,7 +256,17 @@ public class SkipList<T>
 
     private void growSkipList()
     {
-        // IMPLEMENT LATER --------------------------------
+        int height = skipList.height();
+        Node<T> temp = skipList;
+
+        skipList.grow();
+        temp = temp.next(height);
+
+        while (temp != null)
+        {
+            temp.randomGrow();
+            temp = temp.next(height);
+        }
     }
 
     private void trimSkipList()
