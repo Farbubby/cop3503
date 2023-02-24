@@ -296,7 +296,7 @@ public class SkipList<T extends Comparable<T>>
         Node<T> temp = skipList;
 
         skipList.grow();
-        visited.push(skipList);
+        visited.push(temp);
         temp = temp.next(height);
 
         while (temp != null)
@@ -306,6 +306,7 @@ public class SkipList<T extends Comparable<T>>
             {
                 visited.peek().setNext(visited.pop().height(), temp);
                 visited.push(temp);
+                temp = temp.next(height);
             }
         }
     }
