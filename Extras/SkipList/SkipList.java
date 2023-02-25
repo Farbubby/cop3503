@@ -66,18 +66,6 @@ class Node<T extends Comparable<T>>
         }
     }
 
-    public void generateRandomHeight(int maxHeight)
-    {
-        int i;
-        for (i = 0; i < maxHeight; i++)
-        {
-            if (Math.random() < 0.5)
-            {
-                pointers.add(null);    
-            }
-        }
-    }
-
     public void trim(int height)
     {
         int i, size = pointers.size();
@@ -146,8 +134,8 @@ public class SkipList<T extends Comparable<T>>
 
                 if (height == -1)
                 {
-                    temp1 = new Node<T>(data, 1);
-                    temp1.generateRandomHeight(skipList.height());
+                    int randomHeight = generateRandomHeight(skipList.height());
+                    temp1 = new Node<T>(data, randomHeight);
                     numNodes++;
 
                     for (i = 0; i < temp1.height(); i++)
@@ -159,6 +147,7 @@ public class SkipList<T extends Comparable<T>>
 
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
+                        System.out.println(size());
                         growSkipList();
                     }
                 }
@@ -207,11 +196,11 @@ public class SkipList<T extends Comparable<T>>
 
     public void delete(T data)
     {
-        int i, height = skipList.height();
+        int i, height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, temp1;
 
-        while (height != 0)
+        while (height != -1)
         {
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
@@ -226,7 +215,7 @@ public class SkipList<T extends Comparable<T>>
 
             else
             {
-                for (i = temp.height(); i >= 1; i--)
+                for (i = temp.height()-1; i >= 0; i--)
                 {
                     temp.setNext(i, temp.next(i).next(i));
                 }
@@ -242,10 +231,10 @@ public class SkipList<T extends Comparable<T>>
 
     public boolean contains(T data)
     {
-        int height = skipList.height();
+        int height = skipList.height() - 1;
         Node<T> temp = skipList;
 
-        while (height != 0)
+        while (height != -1)
         {
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
@@ -268,10 +257,10 @@ public class SkipList<T extends Comparable<T>>
 
     public Node<T> get(T data)
     {
-        int height = skipList.height();
+        int height = skipList.height() - 1;
         Node<T> temp = skipList;
 
-        while (height != 0)
+        while (height != -1)
         {
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
@@ -289,7 +278,7 @@ public class SkipList<T extends Comparable<T>>
             }
         }
 
-        if (height == 0)
+        if (height == -1)
         {
             return null;
         }
@@ -302,11 +291,24 @@ public class SkipList<T extends Comparable<T>>
         return (int)(Math.log(numNodes)/Math.log(2));
     }
 
+    private int generateRandomHeight(int maxHeight)
+    {
+        int i, height = 1;
+        for (i = 0; i < maxHeight-1; i++)
+        {
+            if (Math.random() < 0.5)
+            {
+                height++;  
+            }
+        }
+        return height;
+    }
+
     private void growSkipList()
     {
-        int height = skipList.height();
+        int height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
-        Node<T> temp = skipList;
+        Node<T> temp = skipList, temp1;
 
         skipList.grow();
         visited.push(temp);
@@ -315,9 +317,11 @@ public class SkipList<T extends Comparable<T>>
         while (temp != null)
         {
             temp.randomGrow();
-            if (visited.peek().height() == temp.height())
+            temp1 = visited.peek();
+            if (temp1.height() == temp.height())
             {
-                visited.peek().setNext(visited.pop().height(), temp);
+                temp1.setNext(temp1.height()-1, temp);
+                visited.pop();
                 visited.push(temp);
                 temp = temp.next(height);
             }
