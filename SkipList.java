@@ -12,12 +12,20 @@ class Node<T extends Comparable<T>>
     public Node(int height)
     {
         pointers = new ArrayList<>(height);
+        for (int i = 0; i < height; i++)
+        {
+            pointers.add(null);
+        }
     }
 
     public Node(T data, int height)
     {
         this.data = data;
-        pointers = new ArrayList<>(height); 
+        pointers = new ArrayList<>(height);
+        for (int i = 0; i < height; i++)
+        {
+            pointers.add(null);
+        }
     }
 
     public T value() 
