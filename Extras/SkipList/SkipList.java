@@ -147,8 +147,8 @@ public class SkipList<T extends Comparable<T>>
 
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
-                        System.out.println(size());
                         growSkipList();
+                        break;
                     }
                 }
             }
@@ -188,6 +188,7 @@ public class SkipList<T extends Comparable<T>>
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
                         growSkipList();
+                        break;
                     }
                 }
             }
@@ -288,7 +289,8 @@ public class SkipList<T extends Comparable<T>>
 
     private static int getMaxHeight(int numNodes)
     {
-        return (int)(Math.log(numNodes)/Math.log(2));
+        double logBase2 = Math.log(numNodes)/Math.log(2);
+        return (int)(Math.ceil(logBase2));
     }
 
     private int generateRandomHeight(int maxHeight)
@@ -338,7 +340,7 @@ public class SkipList<T extends Comparable<T>>
         {
             visited.push(temp);
             temp = temp.next(height);
-            visited.pop().trim(getMaxHeight(numNodes));
+            visited.pop().trim((int)getMaxHeight(numNodes));
         }
     }
 
