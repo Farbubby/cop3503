@@ -218,7 +218,10 @@ public class SkipList<T extends Comparable<T>>
             {
                 for (i = temp.height()-1; i >= 0; i--)
                 {
-                    temp.setNext(i, temp.next(i).next(i));
+                    if (temp.next(i) != null)
+                    {
+                        temp.setNext(i, temp.next(i).next(i));
+                    }
                 }
                 numNodes--;
 
@@ -332,7 +335,7 @@ public class SkipList<T extends Comparable<T>>
 
     private void trimSkipList()
     {
-        int height = skipList.height();
+        int height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList;
 
