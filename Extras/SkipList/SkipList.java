@@ -346,9 +346,8 @@ public class SkipList<T extends Comparable<T>>
 
         while (temp != null)
         {
-            visited.push(temp);
-            temp = temp.next(height);
-            visited.pop().trim(getMaxHeight(numNodes));
+            temp.trim(getMaxHeight(numNodes));
+            temp = temp.next(temp.height()-1);
         }
     }
 
