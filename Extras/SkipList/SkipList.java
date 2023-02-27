@@ -82,11 +82,6 @@ public class SkipList<T extends Comparable<T>>
     private int numNodes;
     private Node<T> skipList;
 
-    public static void main(String[] args)
-    {
-        System.out.println("Hi");
-    }
-
     public SkipList()
     {
         skipList = new Node<T>(1);
@@ -116,7 +111,7 @@ public class SkipList<T extends Comparable<T>>
 
     public void insert(T data)
     {
-        int i, height = skipList.height() - 1;
+        int i, randomHeight, height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, temp1;
 
@@ -134,7 +129,11 @@ public class SkipList<T extends Comparable<T>>
 
                 if (height == -1)
                 {
-                    int randomHeight = generateRandomHeight(skipList.height());
+                    randomHeight = generateRandomHeight(skipList.height());
+                    while (randomHeight == 0)
+                    {
+                        randomHeight = generateRandomHeight(skipList.height());
+                    }
                     temp1 = new Node<T>(data, randomHeight);
                     numNodes++;
 
@@ -299,8 +298,8 @@ public class SkipList<T extends Comparable<T>>
 
     private int generateRandomHeight(int maxHeight)
     {
-        int i, height = 1;
-        for (i = 0; i < maxHeight-1; i++)
+        int i, height = 0;
+        for (i = 0; i < maxHeight; i++)
         {
             if (Math.random() < 0.5)
             {
