@@ -220,7 +220,7 @@ public class SkipList<T extends Comparable<T>>
                 }
                 numNodes--;
 
-                if (skipList.height() > getMaxHeight(numNodes) && getMaxHeight(numNodes) != 0)
+                if ((skipList.height() > getMaxHeight(numNodes)) && getMaxHeight(numNodes) != 0)
                 {
                     trimSkipList();
                     break;
