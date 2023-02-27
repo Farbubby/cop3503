@@ -211,15 +211,20 @@ public class SkipList<T extends Comparable<T>>
 
             else
             {
-                for (i = temp.next(height).height()-1; i >= 0; i--)
+                if (height != 0)
                 {
-                    if (temp.next(i) != null)
-                    {
-                        temp.setNext(i, temp.next(i).next(i));
-                    }
+                    visited.push(temp);
+                    height--;
+                    continue;
+                }
+                visited.push(temp);
+                int targetHeight = temp.next(height).height();
+                for (i = 0; i < targetHeight; i++)
+                {
+                    Node<T> tempNode = visited.pop();
+                    tempNode.setNext(i, tempNode.next(i).next(i));
                 }
                 numNodes--;
-
                 if ((skipList.height() > getMaxHeight(numNodes)) && getMaxHeight(numNodes) != 0)
                 {
                     trimSkipList();
@@ -292,7 +297,7 @@ public class SkipList<T extends Comparable<T>>
         return (int)(Math.ceil(logBase2));
     }
 
-    private int generateRandomHeight(int maxHeight)
+    private static int generateRandomHeight(int maxHeight)
     {
         int i, height = 1;
         for (i = 0; i < maxHeight-1; i++)
