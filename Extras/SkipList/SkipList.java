@@ -328,8 +328,8 @@ public class SkipList<T extends Comparable<T>>
                 temp1.setNext(temp1.height()-1, temp);
                 visited.pop();
                 visited.push(temp);
-                temp = temp.next(height);
             }
+            temp = temp.next(height);
         }
     }
 
