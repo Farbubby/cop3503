@@ -130,10 +130,6 @@ public class SkipList<T extends Comparable<T>>
                 if (height == -1)
                 {
                     randomHeight = generateRandomHeight(skipList.height());
-                    while (randomHeight == 0)
-                    {
-                        randomHeight = generateRandomHeight(skipList.height());
-                    }
                     temp1 = new Node<T>(data, randomHeight);
                     numNodes++;
 
@@ -298,8 +294,8 @@ public class SkipList<T extends Comparable<T>>
 
     private int generateRandomHeight(int maxHeight)
     {
-        int i, height = 0;
-        for (i = 0; i < maxHeight; i++)
+        int i, height = 1;
+        for (i = 0; i < maxHeight-1; i++)
         {
             if (Math.random() < 0.5)
             {
