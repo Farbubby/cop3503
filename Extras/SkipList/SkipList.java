@@ -216,7 +216,7 @@ public class SkipList<T extends Comparable<T>>
 
             else
             {
-                for (i = temp.height()-1; i >= 0; i--)
+                for (i = temp.next(height).height()-1; i >= 0; i--)
                 {
                     if (temp.next(i) != null)
                     {
@@ -228,6 +228,7 @@ public class SkipList<T extends Comparable<T>>
                 if (skipList.height() > getMaxHeight(numNodes))
                 {
                     trimSkipList();
+                    break;
                 }
             }
         }
@@ -343,7 +344,7 @@ public class SkipList<T extends Comparable<T>>
         {
             visited.push(temp);
             temp = temp.next(height);
-            visited.pop().trim((int)getMaxHeight(numNodes));
+            visited.pop().trim(getMaxHeight(numNodes));
         }
     }
 
