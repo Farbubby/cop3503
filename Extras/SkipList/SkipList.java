@@ -301,6 +301,10 @@ public class SkipList<T extends Comparable<T>>
             {
                 height++;  
             }
+            else
+            {
+                break;
+            }
         }
         return height;
     }
