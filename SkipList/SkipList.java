@@ -9,6 +9,7 @@ class Node<T extends Comparable<T>>
     private T data;
     private ArrayList<Node<T>> pointers;
     
+    // Creates the head node of a skiplist
     public Node(int height)
     {
         pointers = new ArrayList<>(height);
@@ -18,6 +19,7 @@ class Node<T extends Comparable<T>>
         }
     }
 
+    // Creates a node with data with T data type
     public Node(T data, int height)
     {
         this.data = data;
@@ -38,6 +40,7 @@ class Node<T extends Comparable<T>>
         return pointers.size();
     }
 
+    // Returns the next node on the level given by the argument
     public Node<T> next(int level)
     {
         if (level >= pointers.size())
@@ -48,6 +51,7 @@ class Node<T extends Comparable<T>>
         return pointers.get(level);
     }
 
+    // Changes the next reference of the node on the level given by the argument
     public void setNext(int level, Node<T> node)
     {
         pointers.set(level, node);
@@ -58,6 +62,7 @@ class Node<T extends Comparable<T>>
         pointers.add(null);
     }
 
+    // There's a 50% chances that a node will increase its height by one
     public void randomGrow()
     {
         if (Math.random() < 0.5)
@@ -66,6 +71,7 @@ class Node<T extends Comparable<T>>
         }
     }
 
+    // Cuts the height of the node to the argument
     public void trim(int height)
     {
         int i, size = pointers.size();
@@ -82,33 +88,39 @@ public class SkipList<T extends Comparable<T>>
     private int numNodes;
     private Node<T> skipList;
 
+    // Initializes the head of a skiplist with height of one
     public SkipList()
     {
         skipList = new Node<T>(1);
         numNodes = 0;
     }
 
+    // Initializes the head of a skiplist with height being the argument
     public SkipList(int height)
     {
         skipList = new Node<T>(height);
         numNodes = 0;
     }
 
+    // Returns the number of nodes in the skiplist
     public int size()
     {
         return numNodes;
     }
 
+    // Returns the head of the skiplist
     public Node<T> head()
     {
         return skipList;
     }
 
+    // Returns height of the head (maximum height of the skiplist)
     public int height()
     {
         return skipList.height();
     }
 
+    // Inserts the node with argument "data" of type T into the skiplist
     public void insert(T data)
     {
         int i, randomHeight, height = skipList.height() - 1;
@@ -117,22 +129,27 @@ public class SkipList<T extends Comparable<T>>
 
         while (height != -1)
         {
+            // If the next node is smaller than the data to be inserted, traverse to that node
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
                 temp = temp.next(height);
             }
 
+            // If the next node is larger than the data to be inserted, descend down 
             else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) >= 0)
             {
+                // Add the "bread-crumb" to the stack
                 visited.push(temp);
                 height--;
 
+                // Start the insertion when reaching the bottom level
                 if (height == -1)
                 {
                     randomHeight = generateRandomHeight(skipList.height());
                     temp1 = new Node<T>(data, randomHeight);
                     numNodes++;
 
+                    // Insertion process
                     for (i = 0; i < temp1.height(); i++)
                     {
                         Node<T> tempNode = visited.pop();
@@ -140,6 +157,7 @@ public class SkipList<T extends Comparable<T>>
                         tempNode.setNext(i, temp1);
                     }
 
+                    // If adding the node makes log2(n) exceed the height of the skiplist
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
                         growSkipList();
@@ -150,6 +168,7 @@ public class SkipList<T extends Comparable<T>>
         }
     }
 
+    // Exact same process as the insertion function above but you can define the nodes height
     public void insert(T data, int height)
     {
         int i, height1 = skipList.height() - 1;
@@ -190,6 +209,7 @@ public class SkipList<T extends Comparable<T>>
         }
     }
 
+    // Deletes a node with argument "data" of type T from the skiplist
     public void delete(T data)
     {
         int i, height = skipList.height() - 1;
@@ -198,19 +218,24 @@ public class SkipList<T extends Comparable<T>>
 
         while (height != -1)
         {
+            // If the next node is smaller than the data to be inserted, traverse to that node
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
             {
                 temp = temp.next(height);
             }
 
+            // If the next node is larger than the data to be inserted, descend down
             else if (temp.next(height) == null || (temp.next(height).value()).compareTo(data) > 0)
             {
+                // Add the "bread-crumb" to the stack
                 visited.push(temp);
                 height--;
             }
 
             else
             {
+                // Ensures if the data is found at the higher level
+                // Keep traversing and descend till you reach the bottom level
                 if (height != 0)
                 {
                     visited.push(temp);
@@ -219,12 +244,16 @@ public class SkipList<T extends Comparable<T>>
                 }
                 visited.push(temp);
                 int targetHeight = temp.next(height).height();
+
+                // Deletion process
                 for (i = 0; i < targetHeight; i++)
                 {
                     Node<T> tempNode = visited.pop();
                     tempNode.setNext(i, tempNode.next(i).next(i));
                 }
                 numNodes--;
+
+                // If log2(n) after deleting a node is less than the height of the skiplist
                 if ((skipList.height() > getMaxHeight(numNodes)) && getMaxHeight(numNodes) != 0)
                 {
                     trimSkipList();
@@ -239,6 +268,8 @@ public class SkipList<T extends Comparable<T>>
         int height = skipList.height() - 1;
         Node<T> temp = skipList;
 
+        // Traverse across nodes and descend based off comparing the data to the next node
+        // If it exits the while loop, then the data isn't in the skiplist
         while (height != -1)
         {
             if (temp.next(height) != null && (temp.next(height).value()).compareTo(data) < 0)
@@ -260,6 +291,7 @@ public class SkipList<T extends Comparable<T>>
         return false;
     }
 
+    // Returns the node with argument "data" of type T
     public Node<T> get(T data)
     {
         int height = skipList.height() - 1;
@@ -291,12 +323,15 @@ public class SkipList<T extends Comparable<T>>
         return temp.next(height);
     }
 
+    // Helper function that returns the expected max height of a skiplist with n nodes
     private static int getMaxHeight(int numNodes)
     {
         double logBase2 = Math.log(numNodes)/Math.log(2);
         return (int)(Math.ceil(logBase2));
     }
 
+    // Helper function that generates a random height for a node
+    // Uses probability for expected distribution +1 (50%) +2 (25%) ....
     private static int generateRandomHeight(int maxHeight)
     {
         int i, height = 1;
@@ -314,16 +349,19 @@ public class SkipList<T extends Comparable<T>>
         return height;
     }
 
+    // Helper function that grows the entire skiplist
     private void growSkipList()
     {
         int height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, temp1;
 
+        // Always increase the head height
         skipList.grow();
         visited.push(temp);
         temp = temp.next(height);
 
+        // There's a 50% chance for the nodes originally with max height to increase by 1.
         while (temp != null)
         {
             temp.randomGrow();
@@ -338,6 +376,7 @@ public class SkipList<T extends Comparable<T>>
         }
     }
 
+    // Trims the entire skiplist based on the number of nodes in the skiplist
     private void trimSkipList()
     {
         int height = skipList.height() - 1;
