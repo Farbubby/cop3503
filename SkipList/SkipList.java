@@ -13,28 +13,32 @@ class Node<T extends Comparable<T>>
     public Node(int height)
     {
         pointers = new ArrayList<>(height);
+
         for (int i = 0; i < height; i++)
         {
             pointers.add(null);
         }
     }
 
-    // Creates a node with data with T data type
+    // Creates a node with data of type T
     public Node(T data, int height)
     {
         this.data = data;
         pointers = new ArrayList<>(height);
+
         for (int i = 0; i < height; i++)
         {
             pointers.add(null);
         }
     }
 
+    // Returns the data of type T in a node
     public T value() 
     {
         return data;
     }
 
+    // Returns the height of a node
     public int height()
     {
         return pointers.size();
@@ -88,7 +92,7 @@ public class SkipList<T extends Comparable<T>>
     private int numNodes;
     private Node<T> skipList;
 
-    // Initializes the head of a skiplist with height of one
+    // Initializes the head of a skiplist with height of 1
     public SkipList()
     {
         skipList = new Node<T>(1);
@@ -120,7 +124,7 @@ public class SkipList<T extends Comparable<T>>
         return skipList.height();
     }
 
-    // Inserts the node with argument "data" of type T into the skiplist
+    // Inserts the node with data of type T into the skiplist
     public void insert(T data)
     {
         int i, randomHeight, height = skipList.height() - 1;
@@ -157,7 +161,7 @@ public class SkipList<T extends Comparable<T>>
                         tempNode.setNext(i, temp1);
                     }
 
-                    // If adding the node makes log2(n) exceed the height of the skiplist
+                    // If adding the node makes expected height exceed the height of the skiplist
                     if (skipList.height() < getMaxHeight(numNodes))
                     {
                         growSkipList();
@@ -242,6 +246,7 @@ public class SkipList<T extends Comparable<T>>
                     height--;
                     continue;
                 }
+
                 visited.push(temp);
                 int targetHeight = temp.next(height).height();
 
@@ -251,9 +256,10 @@ public class SkipList<T extends Comparable<T>>
                     Node<T> tempNode = visited.pop();
                     tempNode.setNext(i, tempNode.next(i).next(i));
                 }
+
                 numNodes--;
 
-                // If log2(n) after deleting a node is less than the height of the skiplist
+                // If expected height after deleting a node is less than height of the skiplist
                 if ((skipList.height() > getMaxHeight(numNodes)) && getMaxHeight(numNodes) != 0)
                 {
                     trimSkipList();
@@ -291,7 +297,7 @@ public class SkipList<T extends Comparable<T>>
         return false;
     }
 
-    // Returns the node with argument "data" of type T
+    // Returns the node with data of type T
     public Node<T> get(T data)
     {
         int height = skipList.height() - 1;
@@ -324,28 +330,31 @@ public class SkipList<T extends Comparable<T>>
     }
 
     // Helper function that returns the expected max height of a skiplist with n nodes
-    private static int getMaxHeight(int numNodes)
+    private static int getMaxHeight(int n)
     {
-        double logBase2 = Math.log(numNodes)/Math.log(2);
+        double logBase2 = Math.log(n)/Math.log(2);
         return (int)(Math.ceil(logBase2));
     }
 
     // Helper function that generates a random height for a node
-    // Uses probability for expected distribution +1 (50%) +2 (25%) ....
+    // Uses probability for expected distribution +1 (50%) +2 (25%) +3 (12.5%) ...
     private static int generateRandomHeight(int maxHeight)
     {
         int i, height = 1;
+
         for (i = 0; i < maxHeight-1; i++)
         {
             if (Math.random() < 0.5)
             {
                 height++;  
             }
+            
             else
             {
                 break;
             }
         }
+
         return height;
     }
 
@@ -366,12 +375,14 @@ public class SkipList<T extends Comparable<T>>
         {
             temp.randomGrow();
             temp1 = visited.peek();
+
             if (temp1.height() == temp.height())
             {
                 temp1.setNext(temp1.height()-1, temp);
                 visited.pop();
                 visited.push(temp);
             }
+
             temp = temp.next(height);
         }
     }
