@@ -317,16 +317,11 @@ public class SkipList<T extends Comparable<T>>
 
             else
             {
-                break;
+                return temp.next(height);
             }
         }
 
-        if (height == -1)
-        {
-            return null;
-        }
-
-        return temp.next(height);
+        return null;
     }
 
     // Helper function that returns the expected max height of a skiplist with n nodes
