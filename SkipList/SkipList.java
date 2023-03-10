@@ -129,7 +129,7 @@ public class SkipList<T extends Comparable<T>>
     {
         int i, randomHeight, height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
-        Node<T> temp = skipList, temp1;
+        Node<T> temp = skipList, newNode, tempNode;
 
         while (height != -1)
         {
@@ -150,15 +150,15 @@ public class SkipList<T extends Comparable<T>>
                 if (height == -1)
                 {
                     randomHeight = generateRandomHeight(skipList.height());
-                    temp1 = new Node<T>(data, randomHeight);
+                    newNode = new Node<T>(data, randomHeight);
                     numNodes++;
 
                     // Insertion process
-                    for (i = 0; i < temp1.height(); i++)
+                    for (i = 0; i < newNode.height(); i++)
                     {
-                        Node<T> tempNode = visited.pop();
-                        temp1.setNext(i, tempNode.next(i));
-                        tempNode.setNext(i, temp1);
+                        tempNode = visited.pop();
+                        newNode.setNext(i, tempNode.next(i));
+                        tempNode.setNext(i, newNode);
                     }
 
                     // If adding the node makes expected height exceed the height of the skiplist
@@ -177,7 +177,7 @@ public class SkipList<T extends Comparable<T>>
     {
         int i, height1 = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
-        Node<T> temp = skipList, temp1;
+        Node<T> temp = skipList, newNode, tempNode;
 
         while (height1 != -1)
         {
@@ -193,14 +193,14 @@ public class SkipList<T extends Comparable<T>>
 
                 if (height1 == -1)
                 {
-                    temp1 = new Node<T>(data, height);
+                    newNode = new Node<T>(data, height);
                     numNodes++;
 
-                    for (i = 0; i < temp1.height(); i++)
+                    for (i = 0; i < newNode.height(); i++)
                     {
-                        Node<T> tempNode = visited.pop();
-                        temp1.setNext(i, tempNode.next(i));
-                        tempNode.setNext(i, temp1);
+                        tempNode = visited.pop();
+                        newNode.setNext(i, tempNode.next(i));
+                        tempNode.setNext(i, newNode);
                     }
 
                     if (skipList.height() < getMaxHeight(numNodes))
@@ -218,7 +218,7 @@ public class SkipList<T extends Comparable<T>>
     {
         int i, height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
-        Node<T> temp = skipList, temp1;
+        Node<T> temp = skipList, tempNode;
 
         while (height != -1)
         {
@@ -253,7 +253,7 @@ public class SkipList<T extends Comparable<T>>
                 // Deletion process
                 for (i = 0; i < targetHeight; i++)
                 {
-                    Node<T> tempNode = visited.pop();
+                    tempNode = visited.pop();
                     tempNode.setNext(i, tempNode.next(i).next(i));
                 }
 
@@ -358,7 +358,7 @@ public class SkipList<T extends Comparable<T>>
     {
         int height = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
-        Node<T> temp = skipList, temp1;
+        Node<T> temp = skipList, tempNode;
 
         // Always increase the head height
         skipList.grow();
@@ -369,11 +369,11 @@ public class SkipList<T extends Comparable<T>>
         while (temp != null)
         {
             temp.randomGrow();
-            temp1 = visited.peek();
+            tempNode = visited.peek();
 
-            if (temp1.height() == temp.height())
+            if (tempNode.height() == temp.height())
             {
-                temp1.setNext(temp1.height()-1, temp);
+                tempNode.setNext(tempNode.height()-1, temp);
                 visited.pop();
                 visited.push(temp);
             }
