@@ -10,7 +10,8 @@ public class TopoPaths
     
     public static void main(String[] args)
     {
-        ArrayList<LinkedList<Integer>> thing = getAdjacencyList("TestCase03-graph.txt");
+        ArrayList<LinkedList<Integer>> thing;
+        thing = getAdjacencyList("./input_files/TestCase03-graph.txt");
 
         for (int j = 0; j < thing.size(); j++)
         {
@@ -36,7 +37,7 @@ public class TopoPaths
         {
             Scanner scan = new Scanner(new File(filename));
 
-            while (scan.hasNext())
+            while (scan.hasNextInt())
             {
                 numVertices = scan.nextInt();
 
@@ -54,9 +55,10 @@ public class TopoPaths
                 }
             }
         }
+
         catch (Exception e)
         {
-            System.out.println("No file");
+            System.out.println(e);
         }
 
         return adjacencyList;
