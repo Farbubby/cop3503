@@ -13,13 +13,9 @@ public class TopoPaths
         ArrayList<LinkedList<Integer>> thing;
         thing = getAdjacencyList("./input_files/TestCase03-graph.txt");
 
-        for (int j = 0; j < thing.size(); j++)
+        for (int i = 0; i < thing.size(); i++)
         {
-            for (int i = 0; i < thing.get(j).size(); i++)
-            {
-                System.out.print(thing.get(j).get(i) + " ");
-            }
-            System.out.println("");
+            System.out.println(thing.get(i));
         }
     }
 
@@ -30,7 +26,7 @@ public class TopoPaths
 
     private static ArrayList<LinkedList<Integer>> getAdjacencyList(String filename)
     {
-        int i, numVertices, numEdges;
+        int i, val, numVertices, numEdges;
         ArrayList<LinkedList<Integer>> adjacencyList = new ArrayList<>();
 
         try
@@ -48,10 +44,13 @@ public class TopoPaths
 
                     for (i = 0; i < numEdges; i++)
                     {
-                        list.add(scan.nextInt());
+                        val = scan.nextInt();
+                        list.add(val);
                     }
-
+                    
                     adjacencyList.add(list);
+
+                    if (!scan.hasNextInt()) break;
                 }
             }
         }
