@@ -175,23 +175,23 @@ public class SkipList<T extends Comparable<T>>
     // Exact same process as the insertion function above but you can define the nodes height
     public void insert(T data, int height)
     {
-        int i, height1 = skipList.height() - 1;
+        int i, level = skipList.height() - 1;
         Stack<Node<T>> visited = new Stack<>();
         Node<T> temp = skipList, newNode, tempNode;
 
-        while (height1 != -1)
+        while (level != -1)
         {
-            if (temp.next(height1) != null && (temp.next(height1).value()).compareTo(data) < 0)
+            if (temp.next(level) != null && (temp.next(level).value()).compareTo(data) < 0)
             {
-                temp = temp.next(height1);
+                temp = temp.next(level);
             }
 
-            else if (temp.next(height1) == null || (temp.next(height1).value()).compareTo(data) >= 0)
+            else if (temp.next(level) == null || (temp.next(level).value()).compareTo(data) >= 0)
             {
                 visited.push(temp);
-                height1--;
+                level--;
 
-                if (height1 == -1)
+                if (level == -1)
                 {
                     newNode = new Node<T>(data, height);
                     numNodes++;
