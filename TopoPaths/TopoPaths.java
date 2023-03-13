@@ -10,48 +10,33 @@ public class TopoPaths
     
     public static void main(String[] args)
     {
-        ArrayList<LinkedList<Integer>> thing;
-        thing = getAdjacencyList("./input_files/TestCase03-graph.txt");
-
-        for (int i = 0; i < thing.size(); i++)
-        {
-            System.out.println(thing.get(i));
-        }
+        countTopoPaths("./input_files/TestCase03-graph.txt");
     }
 
     public static int countTopoPaths(String filename)
     {
-        return 0;
-    }
-
-    private static ArrayList<LinkedList<Integer>> getAdjacencyList(String filename)
-    {
-        int i, val, numVertices, numEdges;
+        int i, j, val, numVertices, numEdges, countIncoming[];
         ArrayList<LinkedList<Integer>> adjacencyList = new ArrayList<>();
 
         try
         {
             Scanner scan = new Scanner(new File(filename));
+            numVertices = scan.nextInt();
+            countIncoming = new int[numVertices];
 
-            while (scan.hasNextInt())
+            for (i = 0; i < numVertices; i++)
             {
-                numVertices = scan.nextInt();
+                LinkedList<Integer> list = new LinkedList<>();
+                numEdges = scan.nextInt();
 
-                for (i = 0; i < numVertices; i++)
+                for (j = 0; j < numEdges; j++)
                 {
-                    LinkedList<Integer> list = new LinkedList<>();
-                    numEdges = scan.nextInt();
-
-                    for (i = 0; i < numEdges; i++)
-                    {
-                        val = scan.nextInt();
-                        list.add(val);
-                    }
-                    
-                    adjacencyList.add(list);
-
-                    if (!scan.hasNextInt()) break;
+                    val = scan.nextInt();
+                    countIncoming[val-1]++;
+                    list.add(val);
                 }
+                    
+                adjacencyList.add(list);
             }
         }
 
@@ -60,7 +45,7 @@ public class TopoPaths
             System.out.println(e);
         }
 
-        return adjacencyList;
+        return 0;
     }
 
     public static double difficultyRating()
