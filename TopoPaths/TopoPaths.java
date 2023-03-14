@@ -10,13 +10,13 @@ public class TopoPaths
     
     public static void main(String[] args)
     {
-        int k = countTopoPaths("./input_files/TestCase05-graph.txt");
+        int k = countTopoPaths("./input_files/TestCase04-graph.txt");
         System.out.println(k);
     }
 
     public static int countTopoPaths(String filename)
     {
-        int i, j, val, numVertices, numEdges, num, countIncoming[];
+        int i, j, k, val, numVertices, numEdges, num, countIncoming[];
         boolean visited[];
         LinkedList<Integer> vertex;
         ArrayDeque<Integer> available = new ArrayDeque<>();
@@ -29,6 +29,7 @@ public class TopoPaths
             countIncoming = new int[numVertices];
             visited = new boolean[numVertices];
 
+            // Creates an adjacency list from File I/O
             for (i = 0; i < numVertices; i++)
             {
                 LinkedList<Integer> list = new LinkedList<>();
@@ -44,6 +45,7 @@ public class TopoPaths
                 adjacencyList.add(list);
             }
 
+            // Starts a queue with all of the nodes with 0 incoming edges
             for (i = 0; i < numVertices; i++)
             {
                 if (countIncoming[i] == 0)
@@ -54,25 +56,30 @@ public class TopoPaths
 
             for (i = 0; i < numVertices; i++)
             {
+                // Idea #1: If at least 2 vertices have 0 incoming edges, a topopath doesn't exist
+                // Idea #2: Empty list means that all of the neighbor nodes have some incoming edge
                 if (available.size() != 1)
                 {
                     return 0;
                 }
 
-                num = available.pop();
+                // Make sure the vertex is marked visited
+                num = available.remove();
                 visited[num] = true;
                 vertex = adjacencyList.get(num);
 
+                // Decrement the incoming edges from the current vertex's neighbors
                 for (j = 0; j < vertex.size(); j++)
                 {
                     countIncoming[vertex.get(j)-1]--;
                 }
 
-                for (i = 0; i < numVertices; i++)
+                // Find the nodes that aren't visited with no incoming edges
+                for (k = 0; k < numVertices; k++)
                 {
-                    if (countIncoming[i] == 0 && !visited[i])
+                    if (countIncoming[k] == 0 && !visited[k])
                     {
-                        available.add(i);
+                        available.add(k);
                     }
                 }
             }
@@ -87,36 +94,6 @@ public class TopoPaths
 
         return 0;
     }
-
-    // private static int findZero(int[] incoming)
-    // {
-    //     int i, len = incoming.length;
-
-    //     for (i = 0; i < len; i++)
-    //     {
-    //         if (incoming[i] == 0)
-    //         {
-    //             return i;
-    //         }
-    //     }
-
-    //     return -1;
-    // }
-
-    // private static int countZeroes(int[] incoming)
-    // {
-    //     int i, count = 0, len = incoming.length;
-
-    //     for (i = 0; i < len; i++)
-    //     {
-    //         if (incoming[i] == 0)
-    //         {
-    //             return count++;
-    //         }
-    //     }
-
-    //     return count;
-    // }
 
     public static double difficultyRating()
     {
