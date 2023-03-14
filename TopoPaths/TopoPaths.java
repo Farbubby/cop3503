@@ -7,13 +7,6 @@ import java.io.*;
 
 public class TopoPaths 
 {
-    
-    public static void main(String[] args)
-    {
-        int k = countTopoPaths("./input_files/TestCase04-graph.txt");
-        System.out.println(k);
-    }
-
     public static int countTopoPaths(String filename)
     {
         int i, j, k, val, numVertices, numEdges, num, countIncoming[];
