@@ -77,6 +77,9 @@ public class TopoPaths
                 }
             }
 
+            // Number of topopaths can't be greater than 1
+            // To have more than one topological sort, you need to have at least 2 vertices with
+            // 0 incoming edges which would mean no path can be made through all vertices.
             return 1;
         }
 
