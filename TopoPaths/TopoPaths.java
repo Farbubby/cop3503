@@ -39,6 +39,7 @@ public class TopoPaths
                 adjacencyList.add(list);
             }
 
+            // Main algorithm starts here
             for (i = 0; i < numVertices; i++)
             {
                 // Find the nodes that aren't visited with no incoming edges
@@ -89,5 +90,4 @@ public class TopoPaths
     {
         return 10.0;
     }
-
 }
