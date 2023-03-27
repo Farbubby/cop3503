@@ -51,7 +51,7 @@ public class TopoPaths
                     }
                 }
 
-                // If none or at least 2 vertices have 0 incoming edges, then there's no topograph
+                // If none or at least 2 vertices have 0 incoming edges, then there's no topopath
                 if (available.size() != 1)
                 {
                     return 0;
@@ -69,7 +69,7 @@ public class TopoPaths
                 }
             }
 
-            // Number of topopaths can't be greater than 1
+            // To get here, there needed to be one node with 0 incoming edges at each vertex step
             return 1;
         }
 
