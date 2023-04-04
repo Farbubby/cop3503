@@ -210,13 +210,13 @@ public class Pathogen
 					printAndWait(maze, height, width, "Hooray!", 12.0);
 				}
 
-				str.deleteCharAt(str.length()-1);
-				paths.add(str.toString());
-				str.append(" ");
-
 				maze[currentRow][currentCol] = PERSON;
 				printAndWait(maze, height, width, "Hooray!", Pathogen.frameRate);
 			}
+
+			str.deleteCharAt(str.length()-1);
+			paths.add(str.toString());
+			str.append(" ");
 
 			return paths;
 		}
