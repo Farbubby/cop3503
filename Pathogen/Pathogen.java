@@ -210,7 +210,9 @@ public class Pathogen
 					printAndWait(maze, height, width, "Hooray!", 12.0);
 				}
 
+				str.deleteCharAt(str.length()-1);
 				paths.add(str.toString());
+				str.append(" ");
 
 				maze[currentRow][currentCol] = PERSON;
 				printAndWait(maze, height, width, "Hooray!", Pathogen.frameRate);
@@ -317,7 +319,7 @@ public class Pathogen
 	private static boolean isLegalMove(char [][] maze, char [][] visited,
 	                                   int row, int col, int height, int width)
 	{
-		if (row > maze.length || col > maze[0].length || 
+		if (row >= maze.length || col >= maze[0].length || row < 0 || col < 0 ||
 			maze[row][col] == WALL || visited[row][col] == BREADCRUMB || maze[row][col] == SICCY)
 			return false;
 
@@ -409,10 +411,20 @@ public class Pathogen
 		return maze;
 	}
 
+	public static double difficultyRating()
+	{
+		return 1.0;
+	}
+
+	public static double hoursSpent()
+	{
+		return 3.0;
+	}
+
 	public static void main(String [] args) throws IOException
 	{
 		// Load maze and turn on "animation."
-		char [][] maze = readMaze("./input_files/maze04.txt");
+		char [][] maze = readMaze("./input_files/maze05.txt");
 		Pathogen.enableAnimation();
 
 		HashSet<String> deez = new HashSet<>();
