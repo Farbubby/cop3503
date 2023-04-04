@@ -271,7 +271,7 @@ public class Pathogen
 			maze[newRow][newCol] = PERSON;
 
 			// Perform recursive descent.
-			findPaths(maze, visited, newRow, newCol, height, width, paths, str);
+			paths = findPaths(maze, visited, newRow, newCol, height, width, paths, str);
 			
 			str.deleteCharAt(str.length()-1);
 			str.deleteCharAt(str.length()-1);
