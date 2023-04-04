@@ -216,7 +216,7 @@ public class Pathogen
 				printAndWait(maze, height, width, "Hooray!", Pathogen.frameRate);
 			}
 
-			return true;
+			return paths;
 		}
 
 		// Moves: left, right, up, down
@@ -243,12 +243,12 @@ public class Pathogen
 
 			if (moves[i][0] == 0 && moves[i][1] == -1)
 			{
-				str.append("r ");
+				str.append("l ");
 			}
 
 			else if (moves[i][0] == 0 && moves[i][1] == 1)
 			{
-				str.append("l ");
+				str.append("r ");
 			}
 
 			else if (moves[i][0] == -1 && moves[i][1] == 0)
@@ -270,9 +270,9 @@ public class Pathogen
 
 			// Perform recursive descent.
 			findPaths(maze, visited, newRow, newCol, height, width, paths, str);
-
-			str.delete(str.length());
-			str.delete(str.length());
+			
+			str.deleteCharAt(str.length()-1);
+			str.deleteCharAt(str.length()-1);
 
 			// Undo state change. Note that if we return from the previous call,
 			// we know visited[newRow][newCol] did not contain the exit, and
@@ -289,7 +289,7 @@ public class Pathogen
 			}
 		}
 
-		return false;
+		return paths;
 	}
 
 
@@ -412,13 +412,15 @@ public class Pathogen
 	public static void main(String [] args) throws IOException
 	{
 		// Load maze and turn on "animation."
-		char [][] maze = readMaze("maze.txt");
+		char [][] maze = readMaze("./input_files/maze04.txt");
 		Pathogen.enableAnimation();
 
-		// Go!!
-		if (Pathogen.solveMaze(maze))
-			System.out.println("Found path to exit!");
-		else
-			System.out.println("There doesn't appear to be a path to the exit.");
+		HashSet<String> deez = new HashSet<>();
+		deez = findPaths(maze);
+
+		for (String i: deez)
+		{
+			System.out.println(i);
+		}
 	}
 }
