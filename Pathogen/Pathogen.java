@@ -1,5 +1,6 @@
-// Sean Szumlanski
-// COP 3503, Spring 2023
+// Farhan Mahbub
+// COP3503 Spring 2023
+// fa203667
 
 // =============================================================================
 // POSTING THIS FILE ONLINE OR DISTRIBUTING IT IN ANY WAY, IN PART OR IN WHOLE,
@@ -83,17 +84,46 @@ public class Pathogen
 	public static void disableAnimation() { Pathogen.animationEnabled = false; }
 	public static void setFrameRate(double fps) { Pathogen.frameRate = fps; }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Maze constants.
 	private static final char WALL       = '#';
 	private static final char PERSON     = '@';
 	private static final char EXIT       = 'e';
+	private static final char SICCY      = '*';
 	private static final char BREADCRUMB = '.';  // visited
 	private static final char SPACE      = ' ';  // unvisited
 
 	// Takes a 2D char maze and returns true if it can find a path from the
 	// starting position to the exit. Assumes the maze is well-formed according
 	// to the restrictions above.
-	public static boolean solveMaze(char [][] maze)
+	public static HashSet<String> findPaths(char [][] maze)
 	{
 		int height = maze.length;
 		int width = maze[0].length;
@@ -127,10 +157,10 @@ public class Pathogen
 		}
 
 		// Let's gooooooooooo!!
-		return solveMaze(maze, visited, startRow, startCol, height, width);
+		return findPaths(maze, visited, startRow, startCol, height, width);
 	}
 
-	private static boolean solveMaze(char [][] maze, char [][] visited,
+	private static HashSet<String> findPaths(char [][] maze, char [][] visited,
 	                                 int currentRow, int currentCol,
 	                                 int height, int width)
 	{
@@ -213,15 +243,42 @@ public class Pathogen
 	}
 
 	// Returns true if moving to row and col is legal (i.e., we have not visited
-	// that position before, and it's not a wall).
+	// that position before, it's not a wall, or exceeds the maze itself)
 	private static boolean isLegalMove(char [][] maze, char [][] visited,
 	                                   int row, int col, int height, int width)
 	{
-		if (maze[row][col] == WALL || visited[row][col] == BREADCRUMB)
+		if (row > maze.length || col > maze[0].length || 
+			maze[row][col] == WALL || visited[row][col] == BREADCRUMB)
 			return false;
 
 		return true;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// This effectively pauses the program for waitTimeInSeconds seconds.
 	private static void wait(double waitTimeInSeconds)
