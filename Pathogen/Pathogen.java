@@ -137,6 +137,9 @@ public class Pathogen
 		//   ' ' -- unvisited
 		//   'e' -- exit
 		char [][] visited = new char[height][width];
+		HashSet<String> paths = new HashSet<>();
+		StringBuilder str = new StringBuilder();
+
 		for (int i = 0; i < height; i++)
 			Arrays.fill(visited[i], SPACE);
 
@@ -157,12 +160,35 @@ public class Pathogen
 		}
 
 		// Let's gooooooooooo!!
-		return findPaths(maze, visited, startRow, startCol, height, width);
+		return findPaths(maze, visited, startRow, startCol, height, width, paths, str);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private static HashSet<String> findPaths(char [][] maze, char [][] visited,
 	                                 int currentRow, int currentCol,
-	                                 int height, int width)
+	                                 int height, int width, HashSet<String> paths,
+									 StringBuilder str)
 	{
 		// This conditional block prints the maze when a new move is made.
 		if (Pathogen.animationEnabled)
@@ -183,6 +209,8 @@ public class Pathogen
 					maze[currentRow][currentCol] = widgets[i];
 					printAndWait(maze, height, width, "Hooray!", 12.0);
 				}
+
+				paths.add(str.toString());
 
 				maze[currentRow][currentCol] = PERSON;
 				printAndWait(maze, height, width, "Hooray!", Pathogen.frameRate);
@@ -213,6 +241,26 @@ public class Pathogen
 			// it easier to extend our code in the event that we want to be able
 			// to handle multiple exits per maze.
 
+			if (moves[i][0] == 0 && moves[i][1] == -1)
+			{
+				str.append("r ");
+			}
+
+			else if (moves[i][0] == 0 && moves[i][1] == 1)
+			{
+				str.append("l ");
+			}
+
+			else if (moves[i][0] == -1 && moves[i][1] == 0)
+			{
+				str.append("u ");
+			}
+
+			else if (moves[i][0] == 1 && moves[i][1] == 0)
+			{
+				str.append("d ");
+			}
+
 			if (maze[newRow][newCol] == EXIT)
 				visited[newRow][newCol] = EXIT;
 
@@ -221,8 +269,10 @@ public class Pathogen
 			maze[newRow][newCol] = PERSON;
 
 			// Perform recursive descent.
-			if (solveMaze(maze, visited, newRow, newCol, height, width))
-				return true;
+			findPaths(maze, visited, newRow, newCol, height, width, paths, str);
+
+			str.delete(str.length());
+			str.delete(str.length());
 
 			// Undo state change. Note that if we return from the previous call,
 			// we know visited[newRow][newCol] did not contain the exit, and
@@ -242,13 +292,33 @@ public class Pathogen
 		return false;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Returns true if moving to row and col is legal (i.e., we have not visited
-	// that position before, it's not a wall, or exceeds the maze itself)
+	// that position before, it's not a wall, exceeds the maze itself, or COVID is there)
 	private static boolean isLegalMove(char [][] maze, char [][] visited,
 	                                   int row, int col, int height, int width)
 	{
 		if (row > maze.length || col > maze[0].length || 
-			maze[row][col] == WALL || visited[row][col] == BREADCRUMB)
+			maze[row][col] == WALL || visited[row][col] == BREADCRUMB || maze[row][col] == SICCY)
 			return false;
 
 		return true;
