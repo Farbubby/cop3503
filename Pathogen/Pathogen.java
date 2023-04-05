@@ -280,7 +280,17 @@ public class Pathogen
 			// we know visited[newRow][newCol] did not contain the exit, and
 			// therefore already contains a breadcrumb, so I haven't updated
 			// that here.
-			maze[newRow][newCol] = ' ';
+			
+			if (visited[newRow][newCol] == 'e')
+			{
+				maze[newRow][newCol] = 'e';
+			}
+
+			else 
+			{
+				maze[newRow][newCol] = ' ';
+			}
+			
 			visited[currentRow][currentCol] = ' ';
 			maze[currentRow][currentCol] = PERSON;
 
