@@ -347,7 +347,7 @@ public class Pathogen
 		char [][] maze = readMaze("./input_files/maze03.txt");
 		Pathogen.enableAnimation();
 
-		HashSet<String> deez = new HashSet<>();
+		HashSet<String> path = new HashSet<>();
 		path = findPaths(maze);
 
 		for (String i: path)
