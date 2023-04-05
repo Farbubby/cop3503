@@ -280,7 +280,8 @@ public class Pathogen
 			// we know visited[newRow][newCol] did not contain the exit, and
 			// therefore already contains a breadcrumb, so I haven't updated
 			// that here.
-			maze[newRow][newCol] = BREADCRUMB;
+			maze[newRow][newCol] = ' ';
+			visited[currentRow][currentCol] = ' ';
 			maze[currentRow][currentCol] = PERSON;
 
 			// This conditional block prints the maze when a move gets undone
@@ -424,7 +425,7 @@ public class Pathogen
 	public static void main(String [] args) throws IOException
 	{
 		// Load maze and turn on "animation."
-		char [][] maze = readMaze("./input_files/maze05.txt");
+		char [][] maze = readMaze("./input_files/maze07.txt");
 		Pathogen.enableAnimation();
 
 		HashSet<String> deez = new HashSet<>();
