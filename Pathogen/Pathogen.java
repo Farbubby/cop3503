@@ -84,34 +84,6 @@ public class Pathogen
 	public static void disableAnimation() { Pathogen.animationEnabled = false; }
 	public static void setFrameRate(double fps) { Pathogen.frameRate = fps; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Maze constants.
 	private static final char WALL       = '#';
 	private static final char PERSON     = '@';
@@ -163,28 +135,6 @@ public class Pathogen
 		return findPaths(maze, visited, startRow, startCol, height, width, paths, str);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	private static HashSet<String> findPaths(char [][] maze, char [][] visited,
 	                                 int currentRow, int currentCol,
 	                                 int height, int width, HashSet<String> paths,
@@ -214,6 +164,8 @@ public class Pathogen
 				printAndWait(maze, height, width, "Hooray!", Pathogen.frameRate);
 			}
 
+			// Add the path to the HashSet "paths"
+			// Deleting a space and adding it again to prevent code breaking
 			str.deleteCharAt(str.length()-1);
 			paths.add(str.toString());
 			str.append(" ");
@@ -229,7 +181,7 @@ public class Pathogen
 			int newRow = currentRow + moves[i][0];
 			int newCol = currentCol + moves[i][1];
 
-			// Check move is in bounds, not a wall, and not marked as visited.
+			// Check move is in bounds, not a wall, not a virus, and not marked as visited.
 			if (!isLegalMove(maze, visited, newRow, newCol, height, width))
 				continue;
 
@@ -243,6 +195,7 @@ public class Pathogen
 			// it easier to extend our code in the event that we want to be able
 			// to handle multiple exits per maze.
 
+			// Determines what the direction the move is
 			if (moves[i][0] == 0 && moves[i][1] == -1)
 			{
 				str.append("l ");
@@ -272,15 +225,17 @@ public class Pathogen
 
 			// Perform recursive descent.
 			paths = findPaths(maze, visited, newRow, newCol, height, width, paths, str);
-			
-			str.deleteCharAt(str.length()-1);
-			str.deleteCharAt(str.length()-1);
 
 			// Undo state change. Note that if we return from the previous call,
 			// we know visited[newRow][newCol] did not contain the exit, and
 			// therefore already contains a breadcrumb, so I haven't updated
 			// that here.
+
+			// We undo that move
+			str.deleteCharAt(str.length()-1);
+			str.deleteCharAt(str.length()-1);
 			
+			// When backtracking, undo breadcrumbs along the way to find multiple paths
 			if (visited[newRow][newCol] == 'e')
 			{
 				maze[newRow][newCol] = 'e';
@@ -290,7 +245,7 @@ public class Pathogen
 			{
 				maze[newRow][newCol] = ' ';
 			}
-			
+
 			visited[currentRow][currentCol] = ' ';
 			maze[currentRow][currentCol] = PERSON;
 
@@ -305,26 +260,6 @@ public class Pathogen
 		return paths;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Returns true if moving to row and col is legal (i.e., we have not visited
 	// that position before, it's not a wall, exceeds the maze itself, or COVID is there)
 	private static boolean isLegalMove(char [][] maze, char [][] visited,
@@ -336,32 +271,6 @@ public class Pathogen
 
 		return true;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	// This effectively pauses the program for waitTimeInSeconds seconds.
 	private static void wait(double waitTimeInSeconds)
@@ -435,13 +344,13 @@ public class Pathogen
 	public static void main(String [] args) throws IOException
 	{
 		// Load maze and turn on "animation."
-		char [][] maze = readMaze("./input_files/maze07.txt");
+		char [][] maze = readMaze("./input_files/maze03.txt");
 		Pathogen.enableAnimation();
 
 		HashSet<String> deez = new HashSet<>();
-		deez = findPaths(maze);
+		path = findPaths(maze);
 
-		for (String i: deez)
+		for (String i: path)
 		{
 			System.out.println(i);
 		}
