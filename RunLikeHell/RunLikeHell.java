@@ -1,6 +1,6 @@
 public class RunLikeHell
 {
-    public static int maxGains(int[] blocks)
+    public static int maxGain(int[] blocks)
     {
         if (blocks.length <= 0)
         {
