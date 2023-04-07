@@ -165,7 +165,8 @@ public class Pathogen
 			}
 
 			// Add the path to the HashSet "paths"
-			// Deleting a space and adding it again to prevent code breaking
+			// Deleting a space and adding it again at the end of string to prevent code breaking
+			// and is O(1) operation
 			str.deleteCharAt(str.length()-1);
 			paths.add(str.toString());
 			str.append(" ");
@@ -184,17 +185,7 @@ public class Pathogen
 			// Check move is in bounds, not a wall, not a virus, and not marked as visited.
 			if (!isLegalMove(maze, visited, newRow, newCol, height, width))
 				continue;
-
-			// Change state. Before moving the person forward in the maze, we
-			// need to check whether we're overwriting the exit. If so, save the
-			// exit in the visited[][] array so we can actually detect that
-			// we've gotten there.
-			//
-			// NOTE: THIS IS OVERKILL. We could just track the exit position's
-			// row and column in two int variables. However, this approach makes
-			// it easier to extend our code in the event that we want to be able
-			// to handle multiple exits per maze.
-
+			
 			// Determines what the direction the move is
 			if (moves[i][0] == 0 && moves[i][1] == -1)
 			{
@@ -216,6 +207,15 @@ public class Pathogen
 				str.append("d ");
 			}
 
+			// Change state. Before moving the person forward in the maze, we
+			// need to check whether we're overwriting the exit. If so, save the
+			// exit in the visited[][] array so we can actually detect that
+			// we've gotten there.
+			//
+			// NOTE: THIS IS OVERKILL. We could just track the exit position's
+			// row and column in two int variables. However, this approach makes
+			// it easier to extend our code in the event that we want to be able
+			// to handle multiple exits per maze.
 			if (maze[newRow][newCol] == EXIT)
 				visited[newRow][newCol] = EXIT;
 
@@ -230,8 +230,6 @@ public class Pathogen
 			// we know visited[newRow][newCol] did not contain the exit, and
 			// therefore already contains a breadcrumb, so I haven't updated
 			// that here.
-
-			// We undo that move
 			str.deleteCharAt(str.length()-1);
 			str.deleteCharAt(str.length()-1);
 			
@@ -261,7 +259,7 @@ public class Pathogen
 	}
 
 	// Returns true if moving to row and col is legal (i.e., we have not visited
-	// that position before, it's not a wall, exceeds the maze itself, or COVID is there)
+	// that position before, it's not a wall, within the maze itself, or COVID isn't there)
 	private static boolean isLegalMove(char [][] maze, char [][] visited,
 	                                   int row, int col, int height, int width)
 	{
@@ -344,7 +342,7 @@ public class Pathogen
 	public static void main(String [] args) throws IOException
 	{
 		// Load maze and turn on "animation."
-		char [][] maze = readMaze("./input_files/maze03.txt");
+		char [][] maze = readMaze("maze.txt");
 		Pathogen.enableAnimation();
 
 		HashSet<String> path = new HashSet<>();
