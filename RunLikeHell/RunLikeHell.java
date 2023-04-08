@@ -1,3 +1,7 @@
+// Farhan Mahbub
+// COP3503 Spring 2023
+// fa203667
+
 public class RunLikeHell
 {
     public static int maxGain(int[] blocks)
